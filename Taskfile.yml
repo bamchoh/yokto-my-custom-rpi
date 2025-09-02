@@ -1,0 +1,21 @@
+# https://taskfile.dev
+
+version: '3'
+
+tasks:
+  clone_poky:
+    cmds:
+      - git clone -b kirkstone git://git.yoctoproject.org/poky --depth 1
+    status:
+      - test -d poky
+    desc: Clone the poky repository
+
+  setup:
+    deps:
+      - clone_poky
+    cmds:
+      - test -d meta-raspberrypi || git clone -b kirkstone git://git.yoctoproject.org/meta-raspberrypi --depth 1
+      - test -d meta-openembedded || git clone -b kirkstone git://git.openembedded.org/meta-openembedded --depth 1
+      - test -d meta-rpi-mycustom || git clone git@github.com:bamchoh/meta-rpi-mycustom.git --depth 1
+    desc: Build the project
+    dir: ./poky
